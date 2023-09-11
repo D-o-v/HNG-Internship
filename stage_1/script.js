@@ -1,18 +1,23 @@
 // script.js
 document.addEventListener("DOMContentLoaded", function () {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const currentDate = new Date();
-    const currentDay = daysOfWeek[currentDate.getUTCDay()];
-    const currentUTCTime = currentDate.getTime();
-    console.log(currentUTCTime)
-    console.log(currentDate)
-
-    // Update the elements with data-testid attributes
-    document.querySelector("[data-testid='currentDayOfTheWeek']").textContent = "Today is: " + currentDay;
-    document.querySelector("[data-testid='currentUTCTime']").textContent = "You have used " + currentUTCTime + " milliseconds today";
-
-    // Set your track and GitHub URL
+    
+    function updateUTCTime() {
+        const currentDate = new Date();
+        console.log(currentDate)
+        const currentDay = daysOfWeek[currentDate.getUTCDay()];
+        const currentUTCTime = currentDate.getTime();
+        console.log(currentUTCTime)
+        
+        document.querySelector("[data-testid='currentDayOfTheWeek']").innerHTML = `Current Day of the Week is:<br>${currentDay}`;
+        document.querySelector("[data-testid='currentUTCTime']").innerHTML = `Current UTC time in milliseconds:<br>${currentUTCTime}`;
+    }
+    
+    updateUTCTime();
+    
+    setInterval(updateUTCTime, 500);
+    
     document.querySelector("[data-testid='myTrack']").textContent = "Frontend";
-    const githubURL = "https://github.com/D-o-v/HNG-Internship/tree/main/stage_1"; // Replace with your GitHub URL
+    const githubURL = "https://github.com/D-o-v/HNG-Internship/tree/main/stage_1"; 
     document.querySelector("[data-testid='githubURL']").href = githubURL;
 });
