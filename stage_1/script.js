@@ -13,6 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Set your track and GitHub URL
     document.querySelector("[data-testid='myTrack']").textContent = "Frontend";
-    const githubURL = "https://github.com/D-o-v/HNG-Internship"; // Replace with your GitHub URL
+    const githubURL = "https://github.com/D-o-v/HNG-Internship/tree/main/stage_1"; // Replace with your GitHub URL
     document.querySelector("[data-testid='githubURL']").href = githubURL;
 });
