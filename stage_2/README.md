@@ -1,27 +1,27 @@
-# React + TypeScript + Vite
+# Movie Box - HNG Stage 2 Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Movie Box** is a dynamic movie search web application that provides a curated list of the top 10 movies when you first load the website. It also allows you to dive deeper into your favorite movies by providing access to video trailers and detailed information.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Get started with Movie Box by following these simple installation steps:
 
-## Expanding the ESLint configuration
+1. **Clone the Repository:**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+   ```bash
+   git clone https://github.com/D-o-v/HNG-Internship/tree/main/stage_2.git
 
-- Configure the top-level `parserOptions` property like this:
+2. **Navigate to the Project Directory:**
+   cd stage_2
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+   This command will install all the necessary packages and dependencies for the project.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. **Install Dependencies:**
+   npm install
+
+4. **USAGE:**
+
+ npm run dev
+
+This will start the development server, and you can access the application in your web browser at http://localhost:3000. Explore the top 10 movies, click on any movie to watch its trailer, and discover comprehensive details about each film.
+

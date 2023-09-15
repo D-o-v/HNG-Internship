@@ -9,7 +9,7 @@ body{
     font-size: 10px;
 }
 .hompageContainer{
-    background-image: url("src/assets/images/Poster.jpeg");
+    /* background-image: url("src/assets/images/Poster.jpeg"); */
     background-size: cover;
     background-position: center center;
     width: 100vw;

@@ -4,18 +4,28 @@ import IMDB from "../assets/images/ratin.png"
 import Berry from "../assets/images/Berry.png"
 import {useNavigate} from "react-router-dom"
 import { Movie } from '../types/types';
+import {useState} from "react";
 
 interface FeaturedMoviePageProps {
-    movieList: Movie[]; // Ensure this matches the prop name
+    movieList: Movie[]; 
+    setSelected: React.Dispatch<React.SetStateAction<Movie | null>>
+    setMovieClicked: React.Dispatch<React.SetStateAction<boolean>>
   }
-const FeaturedMoviePage = ({ movieList}:FeaturedMoviePageProps) => {
+const FeaturedMoviePage = ({ movieList,setSelected,setMovieClicked}:FeaturedMoviePageProps) => {
   const navigate = useNavigate()
+  const [displayCount, setDisplayCount] = useState(10);
+  const [displayText,setDisplayText] = useState("See More >")
 
-  const handleClick=(data:any)=>{
-    console.log(data)
-    navigate(`/movies/${data}`)
-}
+  const handleClick = (data: any) => {
+    setSelected(data);
+    navigate(`/movies/${data.id}`);
+    setMovieClicked(true)
+  };
 
+  const handleShowMore = () => {
+    setDisplayCount((prevCount) => prevCount + 10);
+    setDisplayText("")
+    }
 
 return (
     <div className="container mt-5">
@@ -24,14 +34,14 @@ return (
                 <h3 className="text-start mb-4">Featured Movie</h3>
             </div>
             <div className="col-lg-6 text-end">
-                <p className="mb-4 featuredMovieText2">See More &gt;</p>
+                <p className="mb-4 featuredMovieText2" onClick={handleShowMore} style={{ cursor: "pointer" }}>{displayText}</p>
             </div>
         </div>
         <div className="row d-flex justify-content-between">
             {
-            movieList.slice(0, 10).map((data:any) => (
+            movieList.slice(0, displayCount).map((data:any) => (
                 <div className="col-lg-2 mx-lg-1 px-lg-0 gap-auto col-md-4 col-sm-6 mb-2 d-flex justify-content-end ">
-                    <div data-testid="movie-card" className="card border-0 col-12 m-0 p-0 w-100" onClick={() => handleClick(data.id)} style={{ cursor: "pointer" }}>
+                    <div data-testid="movie-card" className="card border-0 col-12 m-0 p-0 w-100" onClick={() => handleClick(data)} style={{ cursor: "pointer" }}>
                         <img data-testid="movie-poster" src={
                                 `https://image.tmdb.org/t/p/w500${data.poster_path}`
                             }
@@ -91,7 +101,7 @@ return (
         <div className='py-5'>
         <div className='d-flex gap-5 col-lg-3 col-md-4 col-sm-6 align-items-center justify-content-center mx-auto'>
           {socialMedia.map((item) => (
-              <img src={item.icon} alt={`${item.name} icon`} />
+              <img src={item.icon} alt={`${item.name} icon`} key={item.name} />
           ))}
         </div>
           <div className='d-flex gap-5 col-lg-6 col-sm-12 align-items-center justify-content-center mt-2 fw-bold mx-auto'>
