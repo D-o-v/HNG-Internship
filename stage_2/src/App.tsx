@@ -19,7 +19,8 @@ export default function App() {
 
   const getMovielist = async () => {
     try {
-      const response = await axios.get("https://api.themoviedb.org/3/discover/movie", {
+      // const response = await axios.get("https://api.themoviedb.org/3/discover/movie", {
+      const response = await axios.get("https://api.themoviedb.org/3/movie/top_rated", {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
