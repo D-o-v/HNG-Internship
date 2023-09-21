@@ -3,8 +3,6 @@ import { auth } from "../firebase/firebase"
 import { useNavigate } from 'react-router-dom';
 import {toast} from "react-toastify"
 import { LoginProps } from '../types/types';
-import backgroundVideo from "../assets/video/backgroundVedio.mp4"
-
 const Login: React.FC<LoginProps> = ({setIsIn}) => {
   setIsIn(false)
   const [email, setEmail] = useState('');
@@ -47,10 +45,10 @@ const Login: React.FC<LoginProps> = ({setIsIn}) => {
   return (
     <div className="mx-auto align-items-center justify-content-center d-flex" style={{height:"100vh",width:"100vw"}} >
        <video autoPlay muted loop id="background-video">
-      <source src={backgroundVideo} type="video/mp4" />
+      <source src="https://player.vimeo.com/external/337026530.sd.mp4?s=5e1bec41e7e0c227bd70d529f3e9f27d333d561e&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
     </video>
       <div className='container border border-gray rounded-4 p-2 m-auto col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-10'>
-      <h2 className='p-2 text-white'>Login</h2>
+      <h2 className='p-2 text-danger'>Login</h2>
       <form onSubmit={handleLogin} className='d-flex flex-column gap-2 p-2'>
         <input
           type="email"
