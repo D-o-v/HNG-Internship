@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "Help Me Out",
+    "version": "1.0.1",
+    "description":"It does screen,video and audio record",
+    "icons": {
+        "32": "./images/icon128.png"
+    },
+    "background": {
+        "service_worker": "service-worker.js",
+        "type": "module"
+    },
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "scripting",
+        "tabs",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
+
+  
