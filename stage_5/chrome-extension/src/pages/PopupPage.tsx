@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+
+import { useEffect} from 'react';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
 import logo from '../assets/icon/Frame 249.png';
 import settings from '../assets/icon/setting-2.png';
 import cancel from '../assets/icon/close-circle.png';
@@ -9,13 +10,13 @@ import video from '../assets/icon/Vector.png';
 import microphone from '../assets/icon/microphone.png';
 
 export default function PopupPage() {
-  const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+    // const [webcamStream, setWebcamStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
     const startRecording = document.getElementById("start-recording");
     const stopRecording = document.querySelector("button#stop_recording");
+
+ 
 
     startRecording?.addEventListener("click", () => {
       console.log("Start Recording button clicked");
@@ -50,54 +51,148 @@ export default function PopupPage() {
         }
       });
     });
-  }, []); // Empty dependency array to run the effect only once when the component mounts.
+  }, []); 
 
-  const handleRecording = async () => {
+//   const handleRecording = async () => {
+//     const tabs = await chrome.tabs.query({ active: true });
+//     if (tabs[0]) {
+//       const tabId = tabs[0].id as number;
+
+//       let recorder: MediaRecorder | null = null; // Define the recorder variable with the MediaRecorder type
+
+//       chrome.scripting.executeScript({
+//         target: { tabId },
+//         func: () => {
+//           console.log("hi, injecting background");
+
+//           function onAccessApproved(stream: MediaStream) { // Specify the type for the stream argument
+//             recorder = new MediaRecorder(stream);
+//             const videoElement = document.createElement("video");
+//             videoElement.id = "webcam-feed";
+//             videoElement.setAttribute("autoPlay", "");
+//             videoElement.setAttribute("controls", "");
+//             document.body.appendChild(videoElement);
+//             videoElement.srcObject = stream;
+//             document.body.appendChild(videoElement);
+//             videoElement.srcObject = stream;
+//             recorder.start();
+            
+
+//             recorder.onstop = function () {
+//               stream.getTracks().forEach(function (track) {
+//                 if (track.readyState === "live") {
+//                   track.stop();
+//                 }
+//               });
+//             };
+
+//             recorder.ondataavailable = function (event) {
+//               let recordedBlob = event.data;
+//               let url = URL.createObjectURL(recordedBlob);
+
+//               let a = document.createElement("a");
+//               a.style.display = "none";
+//               a.href = url;
+//               a.download = "screen-recording.webm";
+//               document.body.appendChild(a);
+//               a.click();
+//               document.body.removeChild(a);
+//               URL.revokeObjectURL(url);
+//             };
+//           }
+
+//           chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//             if (message.action === "request_recording") {
+//               console.log("requesting recording");
+//               console.log(sender);
+
+//               sendResponse(`processed: ${message.action}`);
+
+//               navigator.mediaDevices
+//                 .getDisplayMedia({
+//                   audio: true,
+//                   video: {
+//                     width: 9999999999,
+//                     height: 9999999999,
+//                   },
+//                 })
+//                 .then((stream) => {
+//                   onAccessApproved(stream);
+//                 });
+//             }
+
+//             if (message.action === "stopRecording") {
+//               console.log("stopping recording");
+//               sendResponse(`processed: ${message.action}`);
+//               if (!recorder) {
+//                 console.log("No recorder");
+//               }
+
+//               recorder?.stop();
+//             }
+//           });
+//         },
+//       });
+//     }
+//   };
+
+const handleRecording = async () => {
     const tabs = await chrome.tabs.query({ active: true });
     if (tabs[0]) {
       const tabId = tabs[0].id as number;
-
+  
       let recorder: MediaRecorder | null = null; // Define the recorder variable with the MediaRecorder type
-
+  
       chrome.scripting.executeScript({
         target: { tabId },
         func: () => {
           console.log("hi, injecting background");
-
-          function onAccessApproved(stream: MediaStream) { // Specify the type for the stream argument
+  
+          function onAccessApproved(stream: MediaStream) {
             recorder = new MediaRecorder(stream);
-            recorder.start();
-
-            recorder.onstop = function () {
-              stream.getTracks().forEach(function (track) {
-                if (track.readyState === "live") {
-                  track.stop();
-                }
-              });
-            };
-
-            recorder.ondataavailable = function (event) {
-              let recordedBlob = event.data;
-              let url = URL.createObjectURL(recordedBlob);
-
-              let a = document.createElement("a");
-              a.style.display = "none";
-              a.href = url;
-              a.download = "screen-recording.webm";
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
-            };
+            const videoElement = document.getElementById("webcam-feed") as HTMLVideoElement;
+  
+            if (videoElement) {
+              videoElement.srcObject = stream;
+              videoElement.setAttribute("autoPlay", "");
+              videoElement.setAttribute("controls", "");
+              videoElement.play(); // Start playing the video
+  
+              recorder.start();
+  
+              recorder.onstop = function () {
+                stream.getTracks().forEach(function (track) {
+                  if (track.readyState === "live") {
+                    track.stop();
+                  }
+                });
+              };
+  
+              recorder.ondataavailable = function (event) {
+                let recordedBlob = event.data;
+                let url = URL.createObjectURL(recordedBlob);
+  
+                let a = document.createElement("a");
+                a.style.display = "none";
+                a.href = url;
+                a.download = "screen-recording.webm";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+              };
+            } else {
+              console.error("Video element with ID 'webcam-feed' not found.");
+            }
           }
-
+  
           chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (message.action === "request_recording") {
               console.log("requesting recording");
               console.log(sender);
-
+  
               sendResponse(`processed: ${message.action}`);
-
+  
               navigator.mediaDevices
                 .getDisplayMedia({
                   audio: true,
@@ -110,14 +205,14 @@ export default function PopupPage() {
                   onAccessApproved(stream);
                 });
             }
-
+  
             if (message.action === "stopRecording") {
               console.log("stopping recording");
               sendResponse(`processed: ${message.action}`);
               if (!recorder) {
                 console.log("No recorder");
               }
-
+  
               recorder?.stop();
             }
           });
@@ -125,6 +220,7 @@ export default function PopupPage() {
       });
     }
   };
+  
 
   return (
     <div className='d-flex align-items-center justify-content-center border p-4 mx-auto border-light flex-column rounded-3' style={{ width: "300px", height: "439px", boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)" }}>
@@ -190,22 +286,9 @@ export default function PopupPage() {
             style={{}}
           />
         </div>
-        <div id='start-recording' className="btn d-flex align-items-center my-2 col-12 justify-content-center fw-bold" style={{ backgroundColor: "#120B48", color: "white" }} onClick={() => { handleRecording(); handleShowModal(); }}> Start Recording</div>
+        <div id='start-recording' className="btn d-flex align-items-center my-2 col-12 justify-content-center fw-bold" style={{ backgroundColor: "#120B48", color: "white" }} onClick={() => { handleRecording() }}> Start Recording</div>
       </Form>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Webcam Recording</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <video autoPlay controls></video>
-          {/* Add control buttons (stop, pause, etc.) here */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 }
+
